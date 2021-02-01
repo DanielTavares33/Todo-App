@@ -19,12 +19,24 @@ export default class Todo extends Component {
 
         this.handleAdd = this.handleAdd.bind(this)
         this.handleChange = this.handleChange.bind(this)
+        this.handleRemove = this.handleRemove.bind(this)
+        this.refresh()
+    }
+
+    handleRemove(todo) {
+        // the id must be passed to the URL, this way we are removing the right todo
+        axios.delete(`${URL}/${todo._id}`).then(resp => this.refresh())
+    }
+
+    refresh() {
+        // "?sort=-createdAt" filter to order by creation date (dec)
+        axios.get(`${URL}?sort=-createdAt`).then(resp => this.setState({ ...this.state, description: '', list: resp.data }))
     }
 
     handleAdd() {
         const description = this.state.description
         axios.post(URL, { description })
-            .then(resp => console.log('Funcionou!'))
+            .then(resp => this.refresh())
     }
 
     handleChange(e) {
@@ -36,7 +48,7 @@ export default class Todo extends Component {
             <div>
                 <PageHeader name="Tarefas" small="Registo" />
                 <TodoForm handleAdd={this.handleAdd} handleChange={this.handleChange} description={this.state.description} />
-                <TodoList />
+                <TodoList list={this.state.list} handleRemove={this.handleRemove} />
             </div>
         )
     }
