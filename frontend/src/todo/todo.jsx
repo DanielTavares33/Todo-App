@@ -73,7 +73,6 @@ export default class Todo extends Component {
                 <TodoForm
                     handleAdd={this.handleAdd}
                     handleChange={this.handleChange}
-                    description={this.state.description}
                     handleSearch={this.handleSearch}
                     handleClear={this.handleClear} />
                 <TodoList
