@@ -16,9 +16,13 @@ export const search = () => {
 }
 
 export const add = (description) => {
-    const request = axios.post(URL, { description: description })
-    return [
-        { type: 'TODO_ADDED', payload: request },
-        search()
-    ]
+    //using the middleware redux-thunk, this way the todo added to the list is displayed on the first try
+    return dispatch => {
+        axios.post(URL, { description: description }).then(
+            resp => dispatch({
+                type: 'TODO_ADDED',
+                payload: resp.data
+            })
+        ).then(resp => dispatch(search()))
+    }
 }
