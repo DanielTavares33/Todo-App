@@ -47,3 +47,9 @@ export const remove = (todo) => {
             .then(resp => dispatch(search()))
     }
 }
+
+export const clear = () => {
+    return {
+        type: 'TODO_CLEAR'
+    }
+}
